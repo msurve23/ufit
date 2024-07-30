@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFit - Rec Center</title>
+    <link rel="stylesheet" href="../dashboard/dashboard.css">
+    <script src="rec-center.js" defer></script>
+</head>
+<body>
+    <div id="rec-center-view" class="view">
+        <div class="sidebar">
+            <button onclick="navigateTo('../dashboard/dashboard.html')">Dashboard</button>
+            <button class="active">Rec Center</button>
+            <button>Community</button>
+            <button onclick="logout()">Log Out</button>
+        </div>
+        <div class="main-content">
+            <div class="header">Recreation Center</div>
+            <div class="rec-info-container">
+                <div class="rec-info">
+                    <p>Monday - Thursday 6:00 am - midnight</p>
+                    <p>Friday 6:00 am - 10:00 pm</p>
+                    <p>Saturday 10:00 am - 10:00 pm</p>
+                    <p>Sunday 10:00 am - midnight</p>
+                </div>
+            </div>
+            <div class="crowd-meter-header">
+                <h2>Crowd Level</h2>
+            </div>
+            <div class="crowd-meter-section">
+                <div id="star-rating">
+                    <span class="star" data-value="1">☆</span>
+                    <span class="star" data-value="2">☆</span>
+                    <span class="star" data-value="3">☆</span>
+                    <span class="star" data-value="4">☆</span>
+                    <span class="star" data-value="5">☆</span>
+                </div>
+                <div id="crowd-level">Current Level: 0 stars</div>
+            </div>
+            <div class="fitness-classes-header">
+                <h2>Fitness Classes</h2>
+            </div>
+            <div class="weekly-buttons">
+                <button class="day-button" data-day="monday">Monday</button>
+                <button class="day-button" data-day="tuesday">Tuesday</button>
+                <button class="day-button" data-day="wednesday">Wednesday</button>
+                <button class="day-button" data-day="thursday">Thursday</button>
+                <button class="day-button" data-day="friday">Friday</button>
+                <button class="day-button" data-day="saturday">Saturday</button>
+                <button class="day-button" data-day="sunday">Sunday</button>
+            </div>
+            <div id="class-schedule">
+                <div id="monday" class="day-schedule">
+                    <h3>Monday</h3>
+                    <p>Yoga: 8:00 am - 9:00 am</p>
+                    <p>Dancing: 6:00 pm - 7:00 pm</p>
+                </div>
+                <div id="tuesday" class="day-schedule">
+                    <h3>Tuesday</h3>
+                    <p>Pilates: 9:00 am - 10:00 am</p>
+                    <p>Zumba: 7:00 pm - 8:00 pm</p>
+                </div>
+                <div id="wednesday" class="day-schedule">
+                    <h3>Wednesday</h3>
+                    <p>HIIT: 8:00 am - 9:00 am</p>
+                    <p>Boxing: 6:00 pm - 7:00 pm</p>
+                </div>
+                <div id="thursday" class="day-schedule">
+                    <h3>Thursday</h3>
+                    <p>Cardio: 9:00 am - 10:00 am</p>
+                    <p>Zumba: 7:00 pm - 8:00 pm</p>
+                </div>
+                <div id="friday" class="day-schedule">
+                    <h3>Friday</h3>
+                    <p>Booty Burn Bootcamp: 8:00 am - 9:00 am</p>
+                    <p>Spin: 6:00 pm - 7:00 pm</p>
+                </div>
+                <div id="saturday" class="day-schedule">
+                    <h3>Saturday</h3>
+                    <p>Yoga: 10:00 am - 11:00 am</p>
+                    <p>Pilates: 5:00 pm - 6:00 pm</p>
+                </div>
+                <div id="sunday" class="day-schedule">
+                    <h3>Sunday</h3>
+                    <p>No Classes!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

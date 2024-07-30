@@ -11,8 +11,7 @@
     <div id="dashboard-view" class="view">
         <div class="sidebar">
             <button id="dashboard" class="active">Dashboard</button>
-            <button id="tracker">Tracker</button>
-            <button id="rec-center">Rec Center</button>
+            <button id="rec-center" onclick="navigateTo('../rec-center/rec-center.html')">Rec Center</button>
             <button id="community">Community</button>
             <button id="logout" onclick="logout()">Log Out</button>
         </div>
@@ -70,5 +69,15 @@
             </div>
         </div>
     </div>
+    <script>
+        function logout() {
+            localStorage.removeItem('username');
+            window.location.href = "../login/index.html"; // Redirect to login page
+        }
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
 </body>
 </html>
