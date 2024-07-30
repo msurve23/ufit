@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFit - Community</title>
+    <link rel="stylesheet" href="../dashboard/dashboard.css">
+    <link rel="stylesheet" href="community.css">
+    <script src="community.js" defer></script>
+</head>
+<body>
+    <div class="view">
+        <div class="sidebar">
+            <button onclick="navigateTo('../dashboard/dashboard.html')">Dashboard</button>
+            <button onclick="navigateTo('../rec-center/rec-center.html')">Rec Center</button>
+            <button class="active">Community</button>
+            <button onclick="logout()">Log Out</button>
+        </div>
+        <div class="main-content">
+            <div class="header">Community</div>
+            <div class="comment-section">
+                <h2>Comments</h2>
+                <div id="comment-list"></div>
+                <textarea id="comment-input" placeholder="Add a comment..."></textarea>
+                <button id="submit-comment">Submit</button>
+                <button id="clear-comments">Clear Comments</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
