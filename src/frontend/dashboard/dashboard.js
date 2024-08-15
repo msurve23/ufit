@@ -1,15 +1,27 @@
 function logout() {
-    localStorage.removeItem('username');
-    window.location.href = "../login/index.html"; // Redirect to login page
+    window.location.href = "../login/index.html";
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const username = localStorage.getItem('username');
-    if (!username) {
-        window.location.href = "../login/index.html"; // Redirect to login if not logged in
-    }
-    loadData();
+    checkLoginStatusAndLoadData();
 });
+
+function checkLoginStatusAndLoadData() {
+    fetch('/api/users/me')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('User not logged in');
+            }
+        })
+        .then(user => {
+            loadData(user.id);
+        })
+        .catch(() => {
+            window.location.href = "../login/index.html";
+        });
+}
 
 function saveData() {
     const exercise = document.getElementById('exercise').value;
@@ -17,22 +29,33 @@ function saveData() {
     const calories = document.getElementById('calories').value;
     const sleep = document.getElementById('sleep').value;
 
-    localStorage.setItem('exercise', exercise);
-    localStorage.setItem('water', water);
-    localStorage.setItem('calories', calories);
-    localStorage.setItem('sleep', sleep);
+    const data = { exercise, water, calories, sleep };
 
-    loadData();
+    fetch('/api/users/me/data', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.ok) {
+            loadData();
+        } else {
+            alert('Error saving data');
+        }
+    })
+    .catch(error => console.error('Error saving data:', error));
 }
 
 function loadData() {
-    const exercise = localStorage.getItem('exercise') || 0;
-    const water = localStorage.getItem('water') || 0;
-    const calories = localStorage.getItem('calories') || 0;
-    const sleep = localStorage.getItem('sleep') || 0;
-
-    document.getElementById('exercise-value').textContent = `${exercise} mins`;
-    document.getElementById('water-value').textContent = `${water}/64 oz`;
-    document.getElementById('calories-value').textContent = `${calories}/500`;
-    document.getElementById('sleep-value').textContent = `${sleep}/8 hours`;
+    fetch('/api/users/me/data')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('exercise-value').textContent = `${data.exercise} mins`;
+            document.getElementById('water-value').textContent = `${data.water}/64 oz`;
+            document.getElementById('calories-value').textContent = `${data.calories}/500`;
+            document.getElementById('sleep-value').textContent = `${data.sleep}/8 hours`;
+        })
+        .catch(error => console.error('Error loading data:', error));
 }

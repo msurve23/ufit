@@ -29,74 +29,62 @@ git clone <https://github.com/msurve23/ufit.git>
 
 ## API Instructions
 
-### Add a New Item
-- **URL**: `/api/items`
+### Add a New User
+- **URL**: `/api/users`
 - **Method**: `POST`
 - **What to Send**:
     ```json
     {
-        "_id": "item1",
-        "name": "Item Name",
-        "description": "Item Description"
+        "username": "username",
+        "password": "pass1234",
+        "confirm": "pass1234"
     }
     ```
 - **Output**:
     ```json
     {
-        "message": "Item created"
-    }
-    ```
-
-### See All Items
-- **URL**: `/api/items`
-- **Method**: `GET`
-- **Output**:
-    ```json
-    [
-        {
-            "_id": "item1",
-            "name": "Item Name",
-            "description": "Item Description"
+        "message": "User created",
+        "user": {
+            "username": "username"
         }
-    ]
+    }
     ```
 
-### Get Item by ID
-- **URL**: `/api/items/:id`
+### Get User by ID
+- **URL**: `/api/users/:id`
 - **Method**: `GET`
 - **Output**:
     ```json
     {
-        "_id": "item1",
-        "name": "Item Name",
-        "description": "Item Description"
+       "_id": "user1",
+        "username": "username",
     }
     ```
 
-### Update an Item
-- **URL**: `/api/items/:id`
+### Update an User
+- **URL**: `/api/users/:id`
 - **Method**: `PUT`
 - **What to Send**:
     ```json
     {
-        "name": "Updated Name",
-        "description": "Updated Description"
+        "password": "newpassword",
+        "confirm": "newpassword",
     }
     ```
 - **Output**:
     ```json
     {
-        "message": "Item updated"
+        "message": "User updated"
     }
     ```
 
-### Delete an Item
-- **URL**: `/api/items/:id`
+### Delete an User
+- **URL**: `/api/users/:id`
 - **Method**: `DELETE`
 - **Output**:
     ```json
     {
-        "message": "Item deleted"
+        "message": "User deleted"
     }
     ```
 

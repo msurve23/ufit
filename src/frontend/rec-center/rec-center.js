@@ -1,23 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    if (!localStorage.getItem('username')) {
-        window.location.href = "../login/index.html";
-    }
+    fetch('/api/users/me')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('User not logged in');
+            }
+        })
+        .then(() => {
+            loadCrowdRating();
+        })
+        .catch(() => {
+            window.location.href = "../login/index.html";
+        });
 
     const stars = document.querySelectorAll('#star-rating .star');
     const crowdMeter = document.getElementById('crowd-level');
-    let currRating = localStorage.getItem('crowdRating') || 0;
-
-    updateStars(currRating);
-    updateCrowdLevel(currRating);
-
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            currRating = this.getAttribute('data-value');
-            localStorage.setItem('crowdRating', currRating);
-            updateStars(currRating);
-            updateCrowdLevel(currRating);
-        });
-    });
+    let currRating = 0;
 
     function updateStars(rating) {
         stars.forEach(star => {
@@ -41,6 +40,37 @@ document.addEventListener('DOMContentLoaded', function() {
         crowdMeter.textContent = crowdOutput;
     }
 
+    function loadCrowdRating() {
+        fetch('/api/crowdrating')
+            .then(response => response.json())
+            .then(data => {
+                currRating = data.rating;
+                updateStars(currRating);
+                updateCrowdLevel(currRating);
+            })
+            .catch(error => console.error('Error loading crowd rating:', error));
+    }
+
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            currRating = this.getAttribute('data-value');
+            updateCrowdRating(currRating);
+            updateStars(currRating);
+            updateCrowdLevel(currRating);
+        });
+    });
+
+    function updateCrowdRating(rating) {
+        fetch('/api/crowdrating', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ rating })
+        })
+        .catch(error => console.error('Error updating crowd rating:', error));
+    }
+
     const buttons = document.querySelectorAll('.day-button');
     const schedules = document.querySelectorAll('.day-schedule');
 
@@ -55,8 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function logout() {
-    localStorage.removeItem('username');
-    window.location.href = "../login/index.html";
+    fetch('/api/logout')
+        .then(() => window.location.href = "../login/index.html")
+        .catch(error => console.error('Error logging out:', error));
 }
 
 function navigateTo(page) {
