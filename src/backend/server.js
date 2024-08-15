@@ -8,29 +8,6 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 
-// Login route
-app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    try {
-        // Fetch users from the database
-        const result = await db.allDocs({ include_docs: true });
-        const users = result.rows.map(row => row.doc);
-
-        // Check if a user with the provided username and password exists
-        const user = users.find(user => user.username === username && user.password === password);
-
-        if (user) {
-            res.status(200).send({ message: 'Login successful' });
-        } else {
-            res.status(401).send({ error: 'Invalid credentials' });
-        }
-    } catch (error) {
-        res.status(500).send({ error: 'Login failed' });
-    }
-});
-
-// Create (POST) - Add a new user
 app.post('/api/users', async (req, res) => {
     try {
         const newUser = req.body;
@@ -41,7 +18,14 @@ app.post('/api/users', async (req, res) => {
     }
 });
 
-// Read (GET) - Retrieve all users from the collection
+app.get('/api/users/me', async (req, res) => {
+    res.status(200).send({ username: 'user' });
+});
+
+app.post('/api/logout', (req, res) => {
+    res.status(200).send({ message: 'Logout successful' });
+});
+
 app.get('/api/users', async (req, res) => {
     try {
         const result = await db.allDocs({ include_docs: true });
@@ -51,40 +35,56 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
-// Read (GET) - Retrieve a single user by ID
 app.get('/api/users/:id', async (req, res) => {
     try {
-        const user = await db.get(req.params.id);
-        res.status(200).send(user);
+        const item = await db.get(req.params.id);
+        res.status(200).send(item);
     } catch (error) {
         res.status(404).send({ error: 'User not found' });
     }
 });
 
-// Update (PUT) - Update an existing user
 app.put('/api/users/:id', async (req, res) => {
     try {
-        const user = await db.get(req.params.id);
-        const updatedUser = { ...user, ...req.body };
-        const result = await db.put(updatedUser);
+        const item = await db.get(req.params.id);
+        const updatedItem = { ...item, ...req.body };
+        const result = await db.put(updatedItem);
         res.status(200).send({ message: 'User updated', result });
     } catch (error) {
         res.status(500).send({ error: 'Could not update user' });
     }
 });
 
-// Delete (DELETE) - Remove a user by ID
 app.delete('/api/users/:id', async (req, res) => {
     try {
-        const user = await db.get(req.params.id);
-        await db.remove(user);
+        const item = await db.get(req.params.id);
+        await db.remove(item);
         res.status(200).send({ message: 'User deleted' });
     } catch (error) {
         res.status(404).send({ error: 'User not found' });
     }
 });
 
-// Start the server
+app.get('/api/crowdrating', async (req, res) => {
+    try {
+        const rating = await db.get('crowdrating') || { rating: 0 };
+        res.status(200).send(rating);
+    } catch (error) {
+        res.status(500).send({ error: 'Could not get crowd rating' });
+    }
+});
+
+app.put('/api/crowdrating', async (req, res) => {
+    try {
+        let rating = await db.get('crowdrating').catch(() => ({ _id: 'crowdrating' }));
+        rating = { ...rating, ...req.body };
+        const result = await db.put(rating);
+        res.status(200).send({ message: 'Crowd rating updated', result });
+    } catch (error) {
+        res.status(500).send({ error: 'Could not update crowd rating' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
