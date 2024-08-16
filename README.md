@@ -1,4 +1,7 @@
 # UFit
+
+Welcome to UFit, an application created for YOU to easily live the healthy lifestyle you have been craving to life. Once logging in with your credentials you will be able to access multiple different functions like tracking your different fitness intakes on the dashboard page, to interacting with your friends on the community tab, to also accessing UMass Rec Center information on our Rec Center Page. Enjoy using our application, the instructions to getting access are down below!
+
 ## Project Setup
 To get started with the project, follow
 these steps:
